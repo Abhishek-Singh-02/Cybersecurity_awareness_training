@@ -1,0 +1,70 @@
+/* Title: Custom Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-image: url('https://www.logsign.com/uploads/real_time_threats_min_1e9a46f198.jpg'); /* Updated to new background image as requested */
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-color: #f3f4f6;
+    position: relative;
+    z-index: 0;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(243, 244, 246, 0.05); /* Further reduced overlay opacity for maximum background visibility */
+    z-index: 0;
+    pointer-events: none;
+}
+
+.container {
+    max-width: 1200px;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white for readability */
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+button {
+    transition: background-color 0.3s ease;
+}
+
+button:disabled {
+    background-color: #a0aec0; /* Gray for disabled buttons */
+    cursor: not-allowed;
+}
+
+.cursor-move {
+    cursor: move;
+}
+
+input, button {
+    outline: none;
+}
+
+section {
+    transition: opacity 0.3s ease;
+}
+
+#quizProgress {
+    font-weight: 500;
+}
+
+#quizResult {
+    font-size: 1.1rem;
+}
+
+#quizQuestion {
+    white-space: pre-wrap; /* Preserve line breaks for email format */
+    font-family: 'Courier New', Courier, monospace; /* Monospace for email look */
+}
+
+#backToModule.phishing {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}

@@ -1,0 +1,92 @@
+
+-- Title: Database Schema and Initial Data
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE quizzes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    module VARCHAR(50) NOT NULL,
+    question TEXT NOT NULL,
+    options JSON NOT NULL,
+    correct_option INT NOT NULL
+);
+
+CREATE TABLE puzzles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    emails JSON NOT NULL,
+    correct_answers JSON NOT NULL
+);
+
+CREATE TABLE user_progress (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    module VARCHAR(50) NOT NULL,
+    question_id INT DEFAULT NULL,
+    completed BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    UNIQUE KEY unique_progress (user_id, module, question_id)
+);
+
+CREATE TABLE attempts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    module VARCHAR(50) NOT NULL,
+    attempt_number INT NOT NULL,
+    score INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Phishing Questions (10) in Email Format
+INSERT INTO quizzes (module, question, options, correct_option) VALUES
+('phishing', 'Subject: Urgent Account Verification\nDear User,\nVerify your account at [Link] to avoid suspension.\nRegards,\n[Fake Bank]', '["Phishing", "Legitimate"]', 0),
+('phishing', 'Subject: You Won a Prize!\nDear User,\nClick [Link] to claim your $500 gift card.\nRegards,\n[Rewards Team]', '["Phishing", "Legitimate"]', 0),
+('phishing', 'Subject: Team Meeting\nDear User,\nJoin our meeting at 10 AM. See attached agenda.\nRegards,\n[Manager]', '["Phishing", "Legitimate"]', 1),
+('phishing', 'Subject: Free iPhone Offer\nDear User,\nClaim your iPhone at [Link] now!\nRegards,\n[Promo Team]', '["Phishing", "Legitimate"]', 0),
+('phishing', 'Subject: Password Reset\nDear User,\nYou requested a reset. Click [Link] to proceed.\nRegards,\n[IT Support]', '["Phishing", "Legitimate"]', 0),
+('phishing', 'Subject: Security Alert\nDear User,\nUnusual activity detected. Verify at [Link].\nRegards,\n[Security Team]', '["Phishing", "Legitimate"]', 0),
+('phishing', 'Subject: Project Update\nDear User,\nReview the updated plan in the shared drive.\nRegards,\n[Project Lead]', '["Phishing", "Legitimate"]', 1),
+('phishing', 'Subject: Gift Card Offer\nDear User,\nRedeem your $100 gift card at [Link]!\nRegards,\n[Rewards]', '["Phishing", "Legitimate"]', 0),
+('phishing', 'Subject: Verify Email\nDear User,\nClick [Link] to verify your email address.\nRegards,\n[Support Team]', '["Phishing", "Legitimate"]', 0),
+('phishing', 'Subject: Invoice Due\nDear User,\nPay your overdue invoice at [Link] to avoid penalties.\nRegards,\n[Accounts]', '["Phishing", "Legitimate"]', 0);
+
+-- Password Security Questions (10)
+INSERT INTO quizzes (module, question, options, correct_option) VALUES
+('password', 'Which is strong?\n1: 12345678\n2: P@ssw0rd!2023\n3: MyDogName2023\n4: X7#mZ9$kL2@pQ8', '["1", "2", "3", "4"]', 3),
+('password', 'Which is secure?\n1: qwerty\n2: Admin123\n3: !9kP#mW2$xL5\n4: Birthday2023', '["1", "2", "3", "4"]', 2),
+('password', 'Which is strong?\n1: password\n2: 987654321\n3: Z@p9#kM2$xQw\n4: MyName123', '["1", "2", "3", "4"]', 2),
+('password', 'Which is weak?\n1: K9#mX2$pL5@w\n2: letmein\n3: Qw3$rT9#zX2\n4: !8kP#mW2$xL', '["1", "2", "3", "4"]', 1),
+('password', 'Which is strong?\n1: 11111111\n2: Secret123\n3: 9#kM2$xL5@wQ\n4: JohnDoe2023', '["1", "2", "3", "4"]', 2),
+('password', 'Which is secure?\n1: abc123\n2: Password!2023\n3: X2#pL9$kM5@w\n4: MyCatName', '["1", "2", "3", "4"]', 2),
+('password', 'Which is strong?\n1: welcome\n2: 123abc\n3: !9kP#mW2$xL5\n4: Family2023', '["1", "2", "3", "4"]', 2),
+('password', 'Which is weak?\n1: Z@p9#kM2$xQw\n2: guest123\n3: Qw3$rT9#zX2\n4: K9#mX2$pL5@w', '["1", "2", "3", "4"]', 1),
+('password', 'Which is strong?\n1: 55555555\n2: User123\n3: 8#kM2$xL5@wQ\n4: Home2023', '["1", "2", "3", "4"]', 2),
+('password', 'Which is secure?\n1: test123\n2: Password!123\n3: X9#pL2$kM5@w\n4: MyKidName', '["1", "2", "3", "4"]', 2);
+
+-- Social Engineering Questions (10)
+INSERT INTO quizzes (module, question, options, correct_option) VALUES
+('socialEng', 'Is this social engineering?\nA caller from HR asks for your employee ID and password.', '["Social Engineering", "Legitimate"]', 0),
+('socialEng', 'Is this social engineering?\nAn email asks you to confirm login details via a link.', '["Social Engineering", "Legitimate"]', 0),
+('socialEng', 'Is this legitimate?\nIT asks you to share your screen to fix an issue.', '["Social Engineering", "Legitimate"]', 0),
+('socialEng', 'Is this social engineering?\nYour manager emails about a team meeting.', '["Social Engineering", "Legitimate"]', 1),
+('socialEng', 'Is this social engineering?\nA caller asks for bank details for a refund.', '["Social Engineering", "Legitimate"]', 0),
+('socialEng', 'Is this legitimate?\nHR emails details for your annual review.', '["Social Engineering", "Legitimate"]', 1),
+('socialEng', 'Is this social engineering?\nA text asks you to verify your account with a code.', '["Social Engineering", "Legitimate"]', 0),
+('socialEng', 'Is this social engineering?\nA colleague asks for sensitive data over unsecured chat.', '["Social Engineering", "Legitimate"]', 0),
+('socialEng', 'Is this legitimate?\nIT emails about a scheduled system update.', '["Social Engineering", "Legitimate"]', 1),
+('socialEng', 'Is this social engineering?\nA vendor asks for payment details over the phone.', '["Social Engineering", "Legitimate"]', 0);
+
+-- Puzzle Data (6 Emails)
+INSERT INTO puzzles (title, emails, correct_answers) VALUES
+('Phishing Email Sorting', '[
+    {"id": 1, "text": "Subject: Win a Free Vacation! Click to claim."},
+    {"id": 2, "text": "Subject: Meeting Agenda for Tomorrow"},
+    {"id": 3, "text": "Subject: Update Your Account or Be Locked Out"},
+    {"id": 4, "text": "Subject: Exclusive Offer: Free Gift Card at [Link]"},
+    {"id": 5, "text": "Subject: HR Policy Update Notification"},
+    {"id": 6, "text": "Subject: Verify Your Payment Details Now"}
+]', '{"1": "phishing", "2": "legitimate", "3": "phishing", "4": "phishing", "5": "legitimate", "6": "phishing"}');
+      
